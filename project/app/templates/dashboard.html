@@ -1,0 +1,412 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Akash Kumar Gupta – Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#38bdf8;
+      --accent2:#a855f7;
+      --glass-bg:rgba(15,23,42,.55);
+      --glass-border:rgba(148,163,184,.5);
+      --text:#e5e7eb;
+      --muted:#9ca3af;
+    }
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',system-ui,sans-serif;
+    }
+    body{
+      min-height:100vh;
+      color:var(--text);
+      background:radial-gradient(circle at top,#1d4ed8 0,#020617 40%,#020617 100%);
+      display:flex;
+      padding:18px;
+    }
+    .glass{
+      background:var(--glass-bg);
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+      border:1px solid var(--glass-border);
+      box-shadow:0 18px 45px rgba(0,0,0,.65);
+      border-radius:22px;
+    }
+    .layout{
+      display:flex;
+      width:100%;
+      gap:18px;
+    }
+
+    /* SIDEBAR */
+    .sidebar{
+      width:250px;
+      padding:20px 16px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+    .avatar{
+      width:120px;
+      height:120px;
+      border-radius:50%;
+      overflow:hidden;
+      border:3px solid #38bdf8;
+      margin-bottom:10px;
+    }
+    .avatar img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center;
+      display:block;
+    }
+    .name{
+      font-size:17px;
+      font-weight:600;
+    }
+    .role{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:22px;
+    }
+    .nav{
+      width:100%;
+      list-style:none;
+    }
+    .nav li{
+      margin-bottom:8px;
+    }
+    .nav a{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:14px;
+      text-decoration:none;
+      color:var(--muted);
+      padding:10px 12px;
+      border-radius:999px;
+      position:relative;
+      transition:background .2s ease,color .2s ease, transform .15s ease;
+    }
+    .nav a span.icon{
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      background:rgba(148,163,184,.15);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:13px;
+      transition:background .2s ease, transform .15s ease;
+    }
+    .nav a.active{
+      color:var(--text);
+      background:linear-gradient(120deg,rgba(56,189,248,.28),rgba(168,85,247,.28));
+    }
+    .nav a:hover{
+      background:linear-gradient(120deg,rgba(56,189,248,.18),rgba(168,85,247,.18));
+      color:#e5e7eb;
+      transform:translateX(4px);
+    }
+    .nav a:hover .icon{
+      background:rgba(56,189,248,.35);
+      transform:translateX(1px);
+    }
+    .logout{
+      margin-top:auto;
+      width:100%;
+      margin-bottom:4px;
+    }
+    .logout a{
+      color:#f97373;
+      font-size:13px;
+      text-decoration:none;
+    }
+
+    /* MAIN */
+    .main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+    .topbar{
+      padding:14px 22px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .logo-text{
+      letter-spacing:.12em;
+      font-size:13px;
+      font-weight:600;
+      text-transform:uppercase;
+    }
+    .welcome{
+      font-size:13px;
+      color:var(--muted);
+    }
+    .welcome b{
+      color:var(--text);
+    }
+    .menu-toggle{
+      display:none;
+      font-size:22px;
+      cursor:pointer;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+      gap:14px;
+    }
+    .card{
+      padding:16px 18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      opacity:.18;
+      background:radial-gradient(circle at top,var(--accent2),transparent 55%);
+      pointer-events:none;
+    }
+    .card-title{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    .card-value{
+      font-size:24px;
+      font-weight:600;
+      position:relative;
+      z-index:1;
+    }
+    .pill{
+      display:inline-block;
+      font-size:11px;
+      padding:2px 7px;
+      border-radius:999px;
+      background:rgba(34,197,94,.2);
+      color:#bbf7d0;
+      margin-left:6px;
+    }
+    .card-sub{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:4px;
+      position:relative;
+      z-index:1;
+    }
+
+    .panel{
+      padding:16px 18px;
+    }
+    .panel-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:8px;
+      font-size:13px;
+    }
+    .panel-header span{
+      color:var(--muted);
+      font-size:12px;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+      margin-top:4px;
+    }
+    th,td{
+      padding:9px 6px;
+      text-align:left;
+    }
+    th{
+      color:var(--muted);
+      font-weight:500;
+      border-bottom:1px solid rgba(30,64,175,.7);
+    }
+    tbody tr{
+      transition:background .18s;
+    }
+    tbody tr:nth-child(even){
+      background:rgba(15,23,42,.7);
+    }
+    tbody tr:hover{
+      background:rgba(30,64,175,.8);
+    }
+
+    @media(max-width:880px){
+      body{padding:10px;}
+      .layout{flex-direction:column;}
+      .sidebar{
+        position:fixed;
+        left:10px;
+        top:10px;
+        bottom:10px;
+        transform:translateX(-120%);
+        z-index:20;
+      }
+      .sidebar.show{
+        transform:translateX(0);
+      }
+      .menu-toggle{
+        display:block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="glass sidebar" id="sidebar">
+      {% load static %}
+      <div class="avatar">
+        <img src="{% static 'image/akash.jpg' %}"
+             width="120" height="120"
+             alt="Akash Kumar Gupta">
+      </div>
+
+      <div class="name">Akash Kumar Gupta</div>
+      <div class="role">Administrator</div>
+
+      <ul class="nav">
+        <li>
+          <a href="#" class="active">
+            <span class="icon">🏠</span>Dashboard
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <span class="icon">👥</span>Users
+          </a>
+        </li>
+
+        <!-- Excel Import: sirf hover, abhi link nahi kholega -->
+        <li>
+          <a href="{% url 'upload_word' %}">
+
+            <span class="icon">📥</span>Excel Import
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <span class="icon">📊</span>Analytics
+          </a>
+        </li>
+
+        <li>
+          <a href="#">
+            <span class="icon">⚙️</span>Settings
+          </a>
+        </li>
+      </ul>
+
+      <div class="logout">
+        <a href="{% url 'admin_login' %}">⏻ Logout</a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+      <header class="glass topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span class="menu-toggle" id="menuToggle">&#9776;</span>
+          <div class="logo-text">AKASH ADMIN PANEL</div>
+        </div>
+        <div class="welcome">
+          Welcome back, <b>Akash Kumar Gupta</b>
+        </div>
+      </header>
+      {% block content %}
+      {% endblock %}
+      {% if show_dashboard %}
+
+      <section class="cards">
+        <div class="glass card">
+          <div class="card-title">Total Users</div>
+          <div class="card-value">1,245<span class="pill">+12%</span></div>
+          <div class="card-sub">Last 7 days</div>
+        </div>
+        <div class="glass card">
+          <div class="card-title">Active Sessions</div>
+          <div class="card-value">87</div>
+          <div class="card-sub">Realtime</div>
+        </div>
+        <div class="glass card">
+          <div class="card-title">Today’s Visits</div>
+          <div class="card-value">534</div>
+          <div class="card-sub">Updated 2 min ago</div>
+        </div>
+        <div class="glass card">
+          <div class="card-title">Pending Tasks</div>
+          <div class="card-value">12</div>
+          <div class="card-sub">This week</div>
+        </div>
+      </section>
+
+      <section class="glass panel">
+        <div class="panel-header">
+          <h3 style="font-size:14px;">Recent Users</h3>
+          <span>Last activity</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Role</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Rohan Sharma</td>
+              <td>Editor</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>Neha Verma</td>
+              <td>Moderator</td>
+              <td>Active</td>
+            </tr>
+            <tr>
+              <td>Amit Singh</td>
+              <td>Viewer</td>
+              <td>Pending</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+  {% endif %}
+  <script>
+    const btn = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+
+    btn && btn.addEventListener('click', () => {
+      sidebar.classList.toggle('show');
+    });
+
+    document.addEventListener('click', e => {
+      if(window.innerWidth > 880) return;
+      if(!sidebar.contains(e.target) && !btn.contains(e.target)){
+        sidebar.classList.remove('show');
+      }
+    });
+  </script>
+</body>
+</html>

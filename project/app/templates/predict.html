@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <title>NEET Rank Predictor</title>
+    <style>
+        body{
+            background: linear-gradient(120deg,#1e3c72,#2a5298);
+            font-family: Arial;
+        }
+        .box{
+            width:400px;
+            margin:80px auto;
+            background:#fff;
+            padding:25px;
+            border-radius:12px;
+            box-shadow:0 0 20px rgba(0,0,0,.3);
+        }
+        h2{
+            text-align:center;
+            color:#1e3c72;
+        }
+        input,select,button{
+            width:100%;
+            padding:12px;
+            margin-top:12px;
+            border-radius:6px;
+            border:1px solid #ccc;
+            font-size:16px;
+        }
+        button{
+            background:#1e3c72;
+            color:#fff;
+            font-weight:bold;
+            cursor:pointer;
+        }
+        button:hover{
+            background:#16325c;
+        }
+        .result{
+            margin-top:20px;
+            padding:15px;
+            background:#e8f0ff;
+            text-align:center;
+            border-radius:8px;
+            font-size:18px;
+            color:#1e3c72;
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>NEET Rank Predictor</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="number" name="score" placeholder="Enter NEET Score" required>
+
+        <select name="difficulty" required>
+            <option value="">Select Difficulty</option>
+            <option value="easy">Easy Paper</option>
+            <option value="medium">Medium Paper</option>
+            <option value="hard">Hard Paper</option>
+        </select>
+
+        <button type="submit">Predict Rank</button>
+    </form>
+
+    {% if result %}
+    <div class="result">
+        Expected NEET Rank: <br> {{ result }}
+    </div>
+    {% endif %}
+</div>
+
+
+{% endblock %}

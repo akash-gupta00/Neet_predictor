@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEET Predictor - Akash Kumar Gupta</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/neet-style.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <!-- JS LIBRARIES (HEAD + DEFER) -->
+    <!-- Chart.js pehle load hoga -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <!-- Tumhara custom JS iske baad, DOM ready hone ke baad chalega -->
+    <script src="neet-script.js" defer></script>
+    <script src="{% static 'js/neet-script.js' %}" defer></script>
+</head>
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <i class="uil uil-stethoscope"></i>
+            </div>
+            <span class="logo_name">NEET Predictor</span>
+            <small>Akash Kumar Gupta</small>
+        </div>
+
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li><a href="#"><i class="uil uil-tachometer-fast-alt"></i><span class="link-name">Dashboard</span></a></li>
+                <li><a href="{% url 'predict' %}"><i class="uil uil-calculator"></i><span class="link-name">Rank Predictor</span></a></li>
+                <li><a href="{% url 'college_predictor' %}"><i class="uil uil-graduation-cap"></i><span class="link-name">College Predictor</span></a></li>
+                <li><a href="#"><i class="uil uil-users-alt"></i><span class="link-name">Students</span></a></li>
+                <li><a href="#"><i class="uil uil-chart-bar"></i><span class="link-name">Analytics</span></a></li>
+                <li><a href="#"><i class="uil uil-file-alt"></i><span class="link-name">Counseling</span></a></li>
+            </ul>
+
+            <ul class="logout-mode">
+                <li><a href="#"><i class="uil uil-bell"></i><span class="link-name">Notifications</span></a></li>
+                <li class="mode">
+                    <a href="#"><i class="uil uil-moon"></i><span class="link-name">Dark Mode</span></a>
+                    <div class="mode-toggle">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="dashboard">
+        <div class="top">
+            <i class="uil uil-bars sidebar-toggle"></i>
+            <div class="search-box">
+                <i class="uil uil-search"></i>
+                <input type="text" placeholder="Search NEET students, roll numbers...">
+            </div>
+            <div class="user-profile">
+                <span>Akash Kumar Gupta</span>
+                <i class="uil uil-user"></i>
+            </div>
+        </div>
+
+        <div class="dash-content">
+            <div class="overview">
+                <div class="title">
+                    <i class="uil uil-stethoscope"></i>
+                    <span class="text">NEET 2026 Predictor Dashboard</span>
+                </div>
+                {% block content %}
+                {% endblock %}
+                {% if show_dashboard %}
+                <div class="boxes">
+                    <div class="box box1">
+                        <i class="uil uil-chart-line"></i>
+                        <span class="text">Predictions Today</span>
+                        <span class="number">2,847</span>
+                    </div>
+                    <div class="box box2">
+                        <i class="uil uil-graduation-cap"></i>
+                        <span class="text">AIIMS Seats</span>
+                        <span class="number">1,257</span>
+                    </div>
+                    <div class="box box3">
+                        <i class="uil uil-rupee-sign"></i>
+                        <span class="text">Premium Users</span>
+                        <span class="number">₹4.8L</span>
+                    </div>
+                    <div class="box box4">
+                        <i class="uil uil-clock-three"></i>
+                        <span class="text">Active Users</span>
+                        <span class="number">15,230</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-section">
+                <div class="chart-box">
+                    <canvas id="rankChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <canvas id="scoreChart"></canvas>
+                </div>
+            </div>
+
+            <div class="recent-students">
+                <div class="title">
+                    <i class="uil uil-users-alt"></i>
+                    <span class="text">Recent Predictions</span>
+                </div>
+                <div class="students-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Roll No.</th>
+                                <th>Student Name</th>
+                                <th>Marks</th>
+                                <th>Predicted Rank</th>
+                                <th>College</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>HRN001</td>
+                                <td>Priya Sharma</td>
+                                <td>685</td>
+                                <td>1,247</td>
+                                <td>AIIMS Delhi</td>
+                                <td><span class="status green">Predicted</span></td>
+                            </tr>
+                            <tr>
+                                <td>HRN002</td>
+                                <td>Rahul Kumar</td>
+                                <td>632</td>
+                                <td>8,456</td>
+                                <td>Maulana Azad MC</td>
+                                <td><span class="status orange">Processing</span></td>
+                            </tr>
+                            <tr>
+                                <td>HRN003</td>
+                                <td>Anita Yadav</td>
+                                <td>598</td>
+                                <td>15,234</td>
+                                <td>PGIMS Rohtak</td>
+                                <td><span class="status green">Premium</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        {% endif %}
+    </section>
+</body>
+</html>
